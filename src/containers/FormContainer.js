@@ -8,6 +8,14 @@ import Button from '../components/Button'
 
 class FormContainer extends Component {  
   state = {
+    "keys": [{
+      key: "Colour", key_id: 1, type: "3"
+    }, {
+      key: "Country", key_id: 2, type: "2"
+    }, {
+      key: "Description", key_id: 3,type: "1"
+    } ],
+   
     "infos": [{
                 id: 1,
                 key: "Colour",
@@ -53,6 +61,10 @@ class FormContainer extends Component {
             ],
             countries: [],
             colorOptions: [],
+            description: [],
+            countriesKey: [],
+            colorOptionsKey: [],
+            descriptionKey: [],
             newUser: {
               country: '',
               colors: [],
@@ -65,7 +77,13 @@ class FormContainer extends Component {
       this.setState({ 
         description: this.state.infos.filter(field => field.type === "1"),
         countries: this.state.infos.filter(field => field.type === "2"),
-        colorOptions: this.state.infos.filter(field => field.type === "3")
+        colorOptions: this.state.infos.filter(field => field.type === "3"),
+
+
+        descriptionKey: this.state.keys.filter(field => field.type === "1"),
+        countriesKey: this.state.keys.filter(field => field.type === "2"),
+        colorOptionsKey: this.state.keys.filter(field => field.type === "3")
+      
       });
     }
 
@@ -128,31 +146,35 @@ class FormContainer extends Component {
   }
 
   render() {
+    // console.log("Data",this.state.countriesKey);
     return (
         <form className="container-fluid" onSubmit={this.handleFormSubmit}>
-
+         { this.state.countriesKey.length ?
           <Select 
-            title={'Country'}
+            title={this.state.countriesKey[0].key}
             name={'country'}
             options = {this.state.countries} 
             value = {this.state.newUser.country}
             placeholder = {'Select your country'}
-            handleChange = {this.handleInput} />
-
+            handleChange = {this.handleInput} />:null
+         }
+        { this.state.colorOptionsKey.length ?
           <CheckBox  
-            title={'Colors'}
+            title={this.state.colorOptionsKey[0].key}
             name={'colors'}
             options={this.state.colorOptions}
             selectedOptions = { this.state.newUser.colors}
-            handleChange={this.handleCheckBox} />
-
+            handleChange={this.handleCheckBox} />:null
+          }
+         { this.state.descriptionKey.length ?
           <TextArea
-            title={'About you'}
+            title={this.state.descriptionKey[0].key}
             rows={10}
             value={this.state.newUser.description}
             name={'currentPetInfo'}
             handleChange={this.handleTextArea}
-            placeholder={'Describe yourself'} />
+            placeholder={'Describe yourself'} />:null
+          }
 
           <Button 
             action = {this.handleFormSubmit}
